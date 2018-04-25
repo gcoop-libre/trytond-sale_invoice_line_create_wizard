@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!-- The COPYRIGHT file at the top level of this repository contains the full
+     copyright notices and license terms. -->
+<tryton>
+    <data>
+        <record model="ir.action.wizard" id="wizard_create_invoices">
+            <field name="name">Create Invoices</field>
+            <field name="wiz_name">sale_invoice_line_create_wizard.create_invoices</field>
+        </record>
+
+        <record model="ir.ui.view" id="create_invoices_start_view_form">
+            <field name="model">sale_invoice_line_create_wizard.create_invoices.start</field>
+            <field name="type">form</field>
+            <field name="name">create_invoices_start_form</field>
+        </record>
+
+        <menuitem parent="sale.menu_sale"
+            sequence="40" action="wizard_create_invoices"
+            id="menu_create_invoices"/>
+    </data>
+</tryton>
