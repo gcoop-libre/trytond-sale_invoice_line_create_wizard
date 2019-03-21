@@ -10,9 +10,8 @@ from trytond.wizard import Wizard, StateView, StateAction, Button
 __all__ = ['InvoiceLine', 'CreateInvoicesStart', 'CreateInvoices']
 
 
-class InvoiceLine:
+class InvoiceLine(metaclass=PoolMeta):
     __name__ = 'account.invoice.line'
-    __metaclass__ = PoolMeta
 
 
 class CreateInvoicesStart(ModelView):
