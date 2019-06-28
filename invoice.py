@@ -42,7 +42,7 @@ class CreateInvoices(Wizard):
         sale_lines = SaleLine.search([
                 ('manual_delivery_date', '<=', self.start.date),
                 ('invoice_lines', '!=', None),
-                ('sale.state', '=', 'processing'),
+                ('sale.state', 'in', ['processing', 'done']),
                 ])
         invoice_lines = []
         for sale_line in sale_lines:
