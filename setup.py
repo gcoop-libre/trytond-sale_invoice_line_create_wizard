@@ -7,7 +7,7 @@ import io
 import os
 import re
 from configparser import ConfigParser
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 def read(fname):
@@ -17,14 +17,17 @@ def read(fname):
 
 
 def get_require_version(name):
-    require = '%s >= %s.%s, < %s.%s'
+    if minor_version % 2:
+        require = '%s >= %s.%s.dev0, < %s.%s'
+    else:
+        require = '%s >= %s.%s, < %s.%s'
     require %= (name, major_version, minor_version,
         major_version, minor_version + 1)
     return require
 
 
 config = ConfigParser()
-config.read_file(open('tryton.cfg'))
+config.read_file(open(os.path.join(os.path.dirname(__file__), 'tryton.cfg')))
 info = dict(config.items('tryton'))
 for key in ('depends', 'extras_depend', 'xml'):
     if key in info:
@@ -40,12 +43,23 @@ download_url = 'https://github.com/gcoop-libre/trytond-sale_invoice_line_create_
 
 requires = []
 for dep in info.get('depends', []):
-    if not re.match(r'(ir|res)(\W|$)', dep):
+    if dep == 'sale_invoice_line_standalone':
+        requires.append(get_require_version('trytonspain_%s' % dep))
+    elif dep == 'sale_delivery_date':
+        requires.append(get_require_version('nantic_%s' % dep))
+    elif not re.match(r'(ir|res)(\W|$)', dep):
         requires.append(get_require_version('trytond_%s' % dep))
 requires.append(get_require_version('trytond'))
 
 tests_require = [get_require_version('proteus')]
-dependency_links = []
+dependency_links = [
+    'https://bitbucket.org/trytonspain/trytond-sale_invoice_line_standalone/get/%s.%s.tar.bz2#egg=trytonspain_sale_invoice_line_standalone-%s.%s' \
+        % (major_version, minor_version, major_version, minor_version),
+    'https://bitbucket.org/gcoop-libre/trytond-sale_delivery_date/get/%s.%s.tar.bz2#egg=nantic_sale_delivery_date-%s.%s' \
+        % (major_version, minor_version, major_version, minor_version),
+    ]
+if minor_version % 2:
+    dependency_links.append('https://trydevpi.tryton.org/')
 
 setup(name=name,
     version=version,
@@ -54,11 +68,18 @@ setup(name=name,
     author='gcoop-libre',
     url='https://github.com/gcoop-libre/trytond-sale_invoice_line_create_wizard',
     download_url=download_url,
+    project_urls={
+        "Bug Tracker": 'https://bugs.tryton.org/',
+        "Documentation": 'https://docs.tryton.org/',
+        "Forum": 'https://www.tryton.org/forum',
+        "Source Code": 'https://github.com/gcoop-libre/trytond-sale_invoice_line_create_wizard',
+        },
     package_dir={'trytond.modules.sale_invoice_line_create_wizard': '.'},
-    packages=[
-        'trytond.modules.sale_invoice_line_create_wizard',
-        'trytond.modules.sale_invoice_line_create_wizard.tests',
-        ],
+    packages=(
+        ['trytond.modules.sale_invoice_line_create_wizard'] +
+        ['trytond.modules.sale_invoice_line_create_wizard.%s' % p
+            for p in find_packages()]
+        ),
     package_data={
         'trytond.modules.sale_invoice_line_create_wizard': (info.get('xml', [])
             + ['tryton.cfg', 'view/*.xml', 'locale/*.po']),
@@ -74,7 +95,7 @@ setup(name=name,
         'Natural Language :: English',
         'Natural Language :: Spanish',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
@@ -84,7 +105,7 @@ setup(name=name,
         'Topic :: Office/Business :: Financial :: Accounting',
         ],
     license='GPL-3',
-    python_requires='>=3.4',
+    python_requires='>=3.5',
     install_requires=requires,
     dependency_links=dependency_links,
     zip_safe=False,
