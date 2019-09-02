@@ -4,10 +4,11 @@
 from trytond.pool import Pool
 from . import invoice
 
+__all__ = ['register']
+
 
 def register():
     Pool.register(
-        invoice.InvoiceLine,
         invoice.CreateInvoicesStart,
         module='sale_invoice_line_create_wizard', type_='model')
     Pool.register(
