@@ -64,6 +64,13 @@ class CreateInvoices(Wizard):
             ('invoice_date', invoice_line.origin.manual_delivery_date),
             ('account', invoice_line.party.account_receivable),
             ]
+        try:
+            Pos = Pool().get('account.pos')
+        except Pos:
+            Pos = None
+        if Pos and invoice_line.origin.sale.pos:
+            grouping.append(('pos', invoice_line.origin.sale.pos))
+
         return grouping
 
     @classmethod
@@ -80,6 +87,10 @@ class CreateInvoices(Wizard):
     def _invoice(cls, lines):
         pool = Pool()
         Invoice = pool.get('account.invoice')
+        try:
+            Pos = pool.get('account.pos')
+        except KeyError:
+            Pos = None
 
         if not lines:
             return []
@@ -90,6 +101,11 @@ class CreateInvoices(Wizard):
             invoice = cls._get_invoice(key)
             invoice.lines = (list(getattr(invoice, 'lines', [])) +
                 list(x for x in grouped_lines))
+            if Pos:
+                invoice.invoice_type = invoice.on_change_with_invoice_type()
+                invoice.set_pyafipws_concept()
+                if invoice.pyafipws_concept in ['2', '3']:
+                    invoice.set_pyafipws_billing_dates()
             invoices.append(invoice)
 
         invoices = Invoice.create([x._save_values for x in invoices])
