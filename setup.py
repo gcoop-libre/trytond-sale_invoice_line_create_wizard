@@ -53,7 +53,7 @@ requires.append(get_require_version('trytond'))
 
 tests_require = [get_require_version('proteus')]
 dependency_links = [
-    'https://bitbucket.org/trytonspain/trytond-sale_invoice_line_standalone/get/%s.%s.tar.bz2#egg=trytonspain_sale_invoice_line_standalone-%s.%s' \
+    'https://github.com/gcoop-libre/trytond-sale_invoice_line_standalone/tarball/%s.%s#egg=trytonspain_sale_invoice_line_standalone-%s.%s' \
         % (major_version, minor_version, major_version, minor_version),
     'https://github.com/gcoop-libre/trytond-sale_delivery_date/tarball/%s.%s#egg=nantic_sale_delivery_date-%s.%s' \
         % (major_version, minor_version, major_version, minor_version),
