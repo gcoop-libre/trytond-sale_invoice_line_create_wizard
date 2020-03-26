@@ -8,8 +8,9 @@ from trytond.pool import PoolMeta
 __all__ = ['SaleLine']
 
 
-class SaleLine(metaclass=PoolMeta):
+class SaleLine:
     __name__ = 'sale.line'
+    __metaclass__ = PoolMeta
 
     sale_party = fields.Function(fields.Many2One('party.party', 'Party'),
         'get_sale_party', searcher='search_sale_party')
