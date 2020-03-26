@@ -3,10 +3,12 @@
 # copyright notices and license terms.
 from trytond.pool import Pool
 from . import invoice
+from . import sale
 
 
 def register():
     Pool.register(
+        sale.SaleLine,
         invoice.InvoiceLine,
         invoice.CreateInvoicesStart,
         module='sale_invoice_line_create_wizard', type_='model')
