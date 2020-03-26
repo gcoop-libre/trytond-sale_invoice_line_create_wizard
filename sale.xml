@@ -34,7 +34,7 @@
                 eval="[
                 ('sale.state', 'in', ['processing', 'done']),
                 ('type', '=', 'line'),
-                ('invoice_lines', '!=', None),
+                ('invoice_lines.invoice', '=', None),
                 ]"
                 pyson="1"/>
         </record>
@@ -72,7 +72,7 @@
                 eval="[
                 ('sale.state', 'in', ['processing', 'done']),
                 ('type', '=', 'line'),
-                ('invoice_lines', '!=', None),
+                ('invoice_lines.invoice', '=', None),
                 ]"
                 pyson="1"/>
         </record>
