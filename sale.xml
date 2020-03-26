@@ -3,19 +3,12 @@
      copyright notices and license terms. -->
 <tryton>
     <data>
-        <!-- sale.line
-        <record model="ir.ui.view" id="sale_line_view_tree">
+        <record model="ir.ui.view" id="sale_process_line_view_tree">
             <field name="model">sale.line</field>
-            <field name="inherit" ref="sale.sale_line_view_tree"/>
+            <field name="type">tree</field>
+            <field name="priority" eval="10"/>
             <field name="name">sale_line_tree</field>
         </record>
-
-        <record model="ir.ui.view" id="sale_line_view_tree_sequence">
-            <field name="model">sale.line</field>
-            <field name="inherit" ref="sale.sale_line_view_tree_sequence"/>
-            <field name="name">sale_line_tree_sequence</field>
-        </record>
-        -->
 
         <record model="ir.action.act_window" id="act_sale_line_form">
             <field name="name">Sale Lines</field>
@@ -25,12 +18,12 @@
         <record model="ir.action.act_window.view" id="act_sale_line_form_view1">
             <field name="act_window" ref="act_sale_line_form"/>
             <field name="sequence" eval="10"/>
-            <field name="view" ref="sale.sale_line_view_tree"/>
+            <field name="view" ref="sale_process_line_view_tree"/>
         </record>
         <record model="ir.action.act_window.view" id="act_sale_line_form_view2">
             <field name="act_window" ref="act_sale_line_form"/>
             <field name="sequence" eval="20"/>
-            <field name="view" ref="sale.sale_line_view_form"/>
+            <field name="view" ref="sale_process_line_view_tree"/>
         </record>
         <record model="ir.action.act_window.domain"
                 id="act_sale_line_form_domain_to_process">
@@ -63,7 +56,7 @@
         <record model="ir.action.act_window.view" id="act_sale_sale_lines_form_view1">
             <field name="act_window" ref="act_sale_sale_lines_form"/>
             <field name="sequence" eval="10"/>
-            <field name="view" ref="sale.sale_line_view_tree_sequence"/>
+            <field name="view" ref="sale_process_line_view_tree"/>
         </record>
         <record model="ir.action.act_window.view" id="act_sale_sale_lines_form_view2">
             <field name="act_window" ref="act_sale_sale_lines_form"/>
