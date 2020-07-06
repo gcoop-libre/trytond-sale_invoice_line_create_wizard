@@ -56,6 +56,7 @@ class CreateInvoices(Wizard):
         '''
         The key to group invoice_lines by Invoice
         '''
+        pool = Pool()
         grouping = [
             ('party', invoice_line.party),
             ('company', invoice_line.company),
@@ -65,11 +66,18 @@ class CreateInvoices(Wizard):
             ('account', invoice_line.party.account_receivable),
             ]
         try:
-            Pos = Pool().get('account.pos')
+            Pos = pool.get('account.pos')
         except Pos:
             Pos = None
         if Pos and invoice_line.origin.sale.pos:
             grouping.append(('pos', invoice_line.origin.sale.pos))
+
+        try:
+            Paymode = pool.get('payment.paymode')
+        except KeyError:
+            Paymode = None
+        if Paymode and invoice_line.origin.sale.paymode:
+            grouping.append(('paymode', invoice_line.origin.sale.paymode))
 
         return grouping
 
