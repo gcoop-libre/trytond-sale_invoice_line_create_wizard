@@ -1,3 +1,68 @@
-# 
+#
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "field:sale.line,sale_party:"
+msgid "Party"
+msgstr "Terceros"
+
+msgctxt "field:sale_invoice_line_create_wizard.create_invoices.start,date:"
+msgid "Date"
+msgstr "fecha"
+
+msgctxt "model:ir.action,name:act_sale_line_form"
+msgid "Sale Lines"
+msgstr "Líneas de venta"
+
+msgctxt "model:ir.action,name:act_sale_sale_lines_form"
+msgid "Lines"
+msgstr "Líneas"
+
+msgctxt "model:ir.action,name:wizard_create_invoices"
+msgid "Create Invoices"
+msgstr "Crear facturas de venta"
+
+msgctxt "model:ir.action.act_window.domain,name:act_sale_line_form_domain_all"
+msgid "All"
+msgstr "Todo"
+
+msgctxt ""
+"model:ir.action.act_window.domain,name:act_sale_line_form_domain_to_process"
+msgid "To Process"
+msgstr "En proceso"
+
+msgctxt ""
+"model:ir.action.act_window.domain,name:act_sale_sale_lines_form_domain_all2"
+msgid "All"
+msgstr "Todo"
+
+msgctxt ""
+"model:ir.action.act_window.domain,name:act_sale_sale_lines_form_domain_to_process"
+msgid "To Process"
+msgstr "En proceso"
+
+msgctxt "model:ir.ui.menu,name:menu_create_invoices"
+msgid "Create Invoices"
+msgstr "Crear facturas de venta"
+
+msgctxt "model:ir.ui.menu,name:menu_sale_line_form"
+msgid "Sale Lines"
+msgstr "Líneas de venta"
+
+msgctxt "model:sale_invoice_line_create_wizard.create_invoices.start,name:"
+msgid "Create Invoices Start"
+msgstr "Crear las facturas de venta hasta la fecha"
+
+msgctxt "view:sale_invoice_line_create_wizard.create_invoices.start:"
+msgid "Create invoices up to"
+msgstr "Crear las facturas de venta hasta la "
+
+msgctxt ""
+"wizard_button:sale_invoice_line_create_wizard.create_invoices,start,create_invoices:"
+msgid "OK"
+msgstr "Aceptar"
+
+msgctxt ""
+"wizard_button:sale_invoice_line_create_wizard.create_invoices,start,end:"
+msgid "Cancel"
+msgstr "Cancelar"
