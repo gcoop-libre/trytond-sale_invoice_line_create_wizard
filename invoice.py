@@ -64,6 +64,8 @@ class CreateInvoices(Wizard):
             ('type', invoice_line.invoice_type),
             ('invoice_date', invoice_line.origin.manual_delivery_date),
             ('account', invoice_line.party.account_receivable),
+            ('reference', invoice_line.origin.sale.reference),
+            ('description', invoice_line.origin.sale.description),
             ]
         try:
             Pos = pool.get('account.pos')
