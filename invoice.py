@@ -70,7 +70,7 @@ class CreateInvoices(Wizard):
             ]
         try:
             Pos = pool.get('account.pos')
-        except Pos:
+        except KeyError:
             Pos = None
         if Pos and invoice_line.origin.sale.pos:
             grouping.append(('pos', invoice_line.origin.sale.pos))
