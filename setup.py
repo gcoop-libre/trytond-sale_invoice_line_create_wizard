@@ -7,7 +7,14 @@ import io
 import os
 import re
 from configparser import ConfigParser
-from setuptools import setup, find_packages
+from setuptools import setup
+
+MODULE = 'sale_invoice_line_create_wizard'
+PREFIX = 'trytonar'
+MODULE2PREFIX = {
+    'sale_invoice_line_standalone': 'trytonspain',
+    'sale_delivery_date': 'nantic',
+    }
 
 
 def read(fname):
@@ -17,6 +24,10 @@ def read(fname):
 
 
 def get_require_version(name):
+    #if name.startswith('trytonar_') or name == 'nantic_sale_delivery_date':
+        #return ''
+    if name in LINKS:
+        return '%s@%s' % (name, LINKS[name])
     if minor_version % 2:
         require = '%s >= %s.%s.dev0, < %s.%s'
     else:
@@ -36,32 +47,37 @@ version = info.get('version', '0.0.1')
 major_version, minor_version, _ = version.split('.', 2)
 major_version = int(major_version)
 minor_version = int(minor_version)
-name = 'trytonar_sale_invoice_line_create_wizard'
+series = '%s.%s' % (major_version, minor_version)
+if minor_version % 2:
+    branch = 'master'
+else:
+    branch = series
 
-download_url = 'https://github.com/gcoop-libre/trytond-sale_invoice_line_create_wizard/tree/%s.%s' % (
-    major_version, minor_version)
+download_url = 'https://github.com/gcoop-libre/trytond-sale_invoice_line_create_wizard/tree/%s' % branch
+
+LINKS = {
+    'trytonspain_sale_invoice_line_standalone': ('git+https://github.com/NaN-tic/'
+        'trytond-sale_invoice_line_standalone.git@%s#egg=trytonspain_sale_invoice_line_standalone-%s' %
+        (branch, series)),
+    'nantic_sale_delivery_date': ('git+https://github.com/NaN-tic/'
+        'trytond-sale_delivery_date.git@%s#egg=nantic_sale_delivery_date-%s' %
+        (branch, series)),
+    }
 
 requires = []
 for dep in info.get('depends', []):
-    if dep == 'sale_invoice_line_standalone':
-        requires.append(get_require_version('trytonspain_%s' % dep))
-    elif dep == 'sale_delivery_date':
-        requires.append(get_require_version('nantic_%s' % dep))
-    elif not re.match(r'(ir|res)(\W|$)', dep):
-        requires.append(get_require_version('trytond_%s' % dep))
+    if not re.match(r'(ir|res)(\W|$)', dep):
+        module_name = '%s_%s' % (MODULE2PREFIX.get(dep, 'trytond'), dep)
+        requires.append(get_require_version(module_name))
+
 requires.append(get_require_version('trytond'))
 
 tests_require = [get_require_version('proteus')]
-dependency_links = [
-    'https://github.com/gcoop-libre/trytond-sale_invoice_line_standalone/tarball/%s.%s#egg=trytonspain_sale_invoice_line_standalone-%s.%s' \
-        % (major_version, minor_version, major_version, minor_version),
-    'https://github.com/gcoop-libre/trytond-sale_delivery_date/tarball/%s.%s#egg=nantic_sale_delivery_date-%s.%s' \
-        % (major_version, minor_version, major_version, minor_version),
-    ]
+dependency_links = list(LINKS.values())
 if minor_version % 2:
     dependency_links.append('https://trydevpi.tryton.org/')
 
-setup(name=name,
+setup(name='%s_%s' % (PREFIX, MODULE),
     version=version,
     description='Tryton module to reports account debts',
     long_description=read('README'),
@@ -74,45 +90,47 @@ setup(name=name,
         "Forum": 'https://www.tryton.org/forum',
         "Source Code": 'https://github.com/gcoop-libre/trytond-sale_invoice_line_create_wizard',
         },
-    package_dir={'trytond.modules.sale_invoice_line_create_wizard': '.'},
-    packages=(
-        ['trytond.modules.sale_invoice_line_create_wizard'] +
-        ['trytond.modules.sale_invoice_line_create_wizard.%s' % p
-            for p in find_packages()]
-        ),
+    package_dir={'trytond.modules.%s' % MODULE: '.'},
+    packages=[
+        'trytond.modules.%s' % MODULE,
+        'trytond.modules.%s.tests' % MODULE,
+        ],
     package_data={
-        'trytond.modules.sale_invoice_line_create_wizard': (info.get('xml', [])
-            + ['tryton.cfg', 'view/*.xml', 'locale/*.po']),
+        'trytond.modules.%s' % MODULE: (info.get('xml', []) + [
+            'tryton.cfg', 'view/*.xml', 'locale/*.po', '*.fodt',
+            '*.fods', 'icons/*.svg', 'tests/*.rst']),
         },
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Plugins',
         'Framework :: Tryton',
         'Intended Audience :: Developers',
         'Intended Audience :: Financial and Insurance Industry',
         'Intended Audience :: Legal Industry',
-        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
+        'License :: OSI Approved :: '
+        'GNU General Public License v3 or later (GPLv3+)',
         'Natural Language :: English',
         'Natural Language :: Spanish',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
         'Topic :: Office/Business',
         'Topic :: Office/Business :: Financial :: Accounting',
         ],
     license='GPL-3',
-    python_requires='>=3.5',
+    python_requires='>=3.6',
     install_requires=requires,
     dependency_links=dependency_links,
     zip_safe=False,
     entry_points="""
     [trytond.modules]
-    sale_invoice_line_create_wizard = trytond.modules.sale_invoice_line_create_wizard
-    """,
+    %s = trytond.modules.%s
+    """ % (MODULE, MODULE),
     test_suite='tests',
     test_loader='trytond.test_loader:Loader',
     tests_require=tests_require,
