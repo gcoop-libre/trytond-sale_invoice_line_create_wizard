@@ -4,8 +4,8 @@
 from itertools import groupby
 
 from trytond.model import ModelView, fields
-from trytond.pool import Pool, PoolMeta
 from trytond.wizard import Wizard, StateView, StateAction, Button
+from trytond.pool import Pool
 
 
 class CreateInvoicesStart(ModelView):
@@ -23,6 +23,7 @@ class CreateInvoicesStart(ModelView):
 class CreateInvoices(Wizard):
     'Create Invoices'
     __name__ = 'sale_invoice_line_create_wizard.create_invoices'
+
     start = StateView('sale_invoice_line_create_wizard.create_invoices.start',
         'sale_invoice_line_create_wizard.create_invoices_start_view_form', [
             Button('Cancel', 'end', 'tryton-cancel'),
