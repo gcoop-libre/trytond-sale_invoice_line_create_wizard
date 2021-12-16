@@ -64,7 +64,7 @@ class CreateInvoices(Wizard):
             ('currency', invoice_line.currency),
             ('type', invoice_line.invoice_type),
             ('invoice_date', invoice_line.origin.manual_delivery_date),
-            ('account', invoice_line.party.account_receivable),
+            ('account', invoice_line.party.account_receivable_used),
             ('reference', invoice_line.origin.sale.reference),
             ('description', invoice_line.origin.sale.description),
             ]
