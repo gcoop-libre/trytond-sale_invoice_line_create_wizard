@@ -10,5 +10,4 @@
     <field name="unit_price"/>
     <field name="taxes"/>
     <field name="amount"/>
-    <field name="unit_digits" tree_invisible="1"/>
 </tree>
