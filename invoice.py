@@ -61,6 +61,7 @@ class CreateInvoices(Wizard):
         grouping = [
             ('party', invoice_line.party),
             ('company', invoice_line.company),
+            ('agent', invoice_line.origin.sale.agent),
             ('currency', invoice_line.currency),
             ('type', invoice_line.invoice_type),
             ('invoice_date', invoice_line.origin.manual_delivery_date),
